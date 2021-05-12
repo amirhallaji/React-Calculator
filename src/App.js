@@ -13,28 +13,31 @@ class App extends React.Component {
       isPositive: true,
       hasOperator: false,
       resultClicked: false,
+      resultClickedMultiple: false,
       operands: [],
       operators: [],
     };
+  }
+
+  componentDidUpdate = () => {
+
   }
   handlePressDigit = (digit) => {
     this.setState({
       screenText: this.state.screenText === '0' || this.state.hasOperator ? digit.toString() : this.state.screenText + digit.toString(),
       hasOperator: false,
+      // resultClicked: false,
     })
   };
+
   handlePressOperator = (operator) => {
     let tempOperators, tempOperands;
 
     tempOperators = [...this.state.operators, operator];
     tempOperands = [...this.state.operands, parseFloat(this.state.screenText)];
-    if(this.state.resultClicked){
-      tempOperands.splice(0, tempOperands.length-1);
-      console.log('tempoperands after change: ', tempOperands);
+    if (this.state.resultClicked) {
+      tempOperands.splice(0, tempOperands.length - 1);
     }
-
-    console.log('Operands in handleoperator: ', tempOperands);
-    console.log('Operators in handleOperator: ', tempOperators);
 
     let result = 0;
     let lastOperand1, lastOperand2;
@@ -77,11 +80,9 @@ class App extends React.Component {
         operands: tempOperands,
         screenText: this.state.hasOperator ? (tempOperands.length % 2 === 0 ? result.toString() : this.state.screenText.slice(0, this.state.screenText.length - 1) + operator) :
           result.toString() + operator,
-        // (tempOperands.length % 2 == 0) ? result.toString() + operator : '',
         resultClicked: false,
       }, () => {
-        console.log('result in operator: ', result);
-        console.log('tempoperands in operator: ', tempOperands);
+        // console.log('tempoperands in operator: ', tempOperands);
       })
     }
   };
@@ -93,8 +94,10 @@ class App extends React.Component {
       isPositive: true,
       hasOperator: false,
       resultClicked: false,
+      resultClickedMultiple: false,
       operators: [],
       operands: [],
+      memory: [],
     })
   };
   handlePressDot = () => {
@@ -121,14 +124,22 @@ class App extends React.Component {
   };
 
   handlePressResult = () => {
+
     let tempOperands, tempOperators;
     tempOperands = [...this.state.operands, parseFloat(this.state.screenText)];
+    // tempOperands = [...this.state.operands];
     tempOperators = [...this.state.operators];
+
+
+    // tempOperands.push(parseFloat(this.state.screenText));
+    console.log('efrgvbf: ', tempOperands);
+
 
     let lastOperator = tempOperators[tempOperators.length - 1];
     let lastOperand1, lastOperand2;
     lastOperand1 = tempOperands.length - 1;
     lastOperand2 = tempOperands.length - 2;
+
     let result = 0;
     switch (lastOperator) {
       case '+':
@@ -145,20 +156,37 @@ class App extends React.Component {
         break;
     }
     tempOperands.push(result);
-    console.log('result: ', result);
-    // let temp = tempOperands[lastOperand1];
-    // tempOperands[lastOperand1] = result;
-    // tempOperands[lastOperand2] = temp;
-
 
     this.setState({
       resultClicked: true,
       screenText: result.toString(),
+      resultClickedMultiple: true,
     }, () => {
       console.log('tempOperads in handleReuslt: ', tempOperands);
     });
 
   };
+
+  // showScreenText = (tempOperands, tempOperators) => {
+  //   console.log('let"s see: ', this.state.resultClicked);
+  //   let lastOperand1, lastOperand2, lastOperator;
+  //   lastOperand1 = tempOperands.length-1;
+  //   lastOperand2 = tempOperands.length-2;
+  //   lastOperator = tempOperators[tempOperators.length-1];
+  //   console.log('tempoperands in new function: ', tempOperands);
+  //   let result = 0;
+  //   switch(lastOperator){
+  //     case '+':
+  //       result = parseFloat(tempOperands[lastOperand2]) + parseFloat(tempOperands[lastOperand1]);
+  //       console.log('result in new func: ', result);
+  //       break;
+  //   }
+  //   return result.toString();
+  // }
+
+  handleMemory = (memory) => {
+
+  }
 
   render() {
     return (
@@ -171,6 +199,7 @@ class App extends React.Component {
           onPressDot={this.handlePressDot}
           onPressNegator={this.handlePressNegator}
           onPressResult={this.handlePressResult}
+          onPressMemory={this.handleMemory}
         />
       </div>
     );

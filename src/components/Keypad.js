@@ -7,9 +7,17 @@ const Keypad = ({
   onPressAC,
   onPressNegator,
   onPressDot,
+  onPressMemory,
 }) => {
   return (
     <>
+      <div>
+        <Key text={"MR"} onClick={() => onPressMemory('mr')} />
+        <Key text={"M+"} onClick={() => onPressMemory('m+')} />
+        <Key text={"M-"} onClick={() => onPressMemory("m-")} />
+        <Key text={"MS"} blue onClick={() => onPressMemory("ms")} />
+
+      </div>
       <div>
         <Key text={"AC"} onClick={onPressAC} />
         <Key text={"+/-"} onClick={onPressNegator} />
