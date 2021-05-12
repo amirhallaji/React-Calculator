@@ -25,16 +25,22 @@ class App extends React.Component {
   };
   handlePressOperator = (operator) => {
     let tempOperators, tempOperands;
+
     tempOperators = [...this.state.operators, operator];
     tempOperands = [...this.state.operands, parseFloat(this.state.screenText)];
+    if(this.state.resultClicked){
+      tempOperands.splice(0, tempOperands.length-1);
+      console.log('tempoperands after change: ', tempOperands);
+    }
 
-    console.log('Operands : ', tempOperands);
-    console.log('Operators : ', tempOperators);
+    console.log('Operands in handleoperator: ', tempOperands);
+    console.log('Operators in handleOperator: ', tempOperators);
 
     let result = 0;
     let lastOperand1, lastOperand2;
     lastOperand1 = tempOperands.length - 1;
     lastOperand2 = tempOperands.length - 2;
+
 
     if (operator === '%') {
       tempOperands[lastOperand1] = (tempOperands[lastOperand1] * tempOperands[lastOperand2]) / 100;
@@ -71,6 +77,11 @@ class App extends React.Component {
         operands: tempOperands,
         screenText: this.state.hasOperator ? (tempOperands.length % 2 === 0 ? result.toString() : this.state.screenText.slice(0, this.state.screenText.length - 1) + operator) :
           result.toString() + operator,
+        // (tempOperands.length % 2 == 0) ? result.toString() + operator : '',
+        resultClicked: false,
+      }, () => {
+        console.log('result in operator: ', result);
+        console.log('tempoperands in operator: ', tempOperands);
       })
     }
   };
@@ -135,14 +146,16 @@ class App extends React.Component {
     }
     tempOperands.push(result);
     console.log('result: ', result);
-    let temp = tempOperands[lastOperand1];
-    tempOperands[lastOperand1] = result;
-    tempOperands[lastOperand2] = temp;
+    // let temp = tempOperands[lastOperand1];
+    // tempOperands[lastOperand1] = result;
+    // tempOperands[lastOperand2] = temp;
 
 
     this.setState({
       resultClicked: true,
       screenText: result.toString(),
+    }, () => {
+      console.log('tempOperads in handleReuslt: ', tempOperands);
     });
 
   };
