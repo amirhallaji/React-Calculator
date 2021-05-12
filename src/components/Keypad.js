@@ -12,6 +12,7 @@ const Keypad = ({
   return (
     <>
       <div>
+        <Key text={"MC"} onClick={() => onPressMemory('mc')} />
         <Key text={"MR"} onClick={() => onPressMemory('mr')} />
         <Key text={"M+"} onClick={() => onPressMemory('m+')} />
         <Key text={"M-"} onClick={() => onPressMemory("m-")} />

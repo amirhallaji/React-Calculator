@@ -16,6 +16,9 @@ class App extends React.Component {
       resultClickedMultiple: false,
       operands: [],
       operators: [],
+      memory: [],
+      memoryClicked: false,
+      resultClickedOperand: null,
     };
   }
 
@@ -24,8 +27,9 @@ class App extends React.Component {
   }
   handlePressDigit = (digit) => {
     this.setState({
-      screenText: this.state.screenText === '0' || this.state.hasOperator ? digit.toString() : this.state.screenText + digit.toString(),
+      screenText: this.state.screenText === '0' || this.state.hasOperator || this.state.memoryClicked ? digit.toString() : this.state.screenText + digit.toString(),
       hasOperator: false,
+      memoryClicked: false,
       // resultClicked: false,
     })
   };
@@ -98,6 +102,7 @@ class App extends React.Component {
       operators: [],
       operands: [],
       memory: [],
+      memoryClicked: false,
     })
   };
   handlePressDot = () => {
@@ -184,8 +189,36 @@ class App extends React.Component {
   //   return result.toString();
   // }
 
+
   handleMemory = (memory) => {
 
+    let onScreen = this.state.screenText;
+    let currentMemory = localStorage.getItem(onScreen);
+    currentMemory = parseFloat(currentMemory);
+    console.log('onScreen: ', onScreen);
+    switch (memory) {
+      case 'm+':
+        currentMemory += parseFloat(onScreen);
+        localStorage.removeItem(onScreen);
+        localStorage.setItem(currentMemory, currentMemory);
+        break;
+      case 'm-':
+        break;
+      case 'mc':
+        localStorage.clear();
+        break;
+      case 'mr':
+        this.setState({
+          screenText: '',
+        });
+        break;
+      case 'ms':
+        break;
+    }
+
+    this.setState({
+      memoryClicked: true,
+    });
   }
 
   render() {
