@@ -36,6 +36,11 @@
   box-sizing: border-box;
 }
 
+.mem {
+  width: 80px;
+  height: 80px;
+  background-color:grey;
+}
 
 @media screen and (max-width: 400px) {
   .key {
@@ -46,6 +51,12 @@
   .key.wide {
     width: 100px;
     height: 50px;
+  }
+
+  .mem {
+    width: 40px;
+    height: 40px;
+    font-size: 12px;
   }
 
   .screen {
@@ -61,6 +72,13 @@
     .key.wide {
       width: 50px;
       height: 25px;
+    }
+
+    .mem {
+      width: 20px;
+      height: 20px;
+      font-size: 6px;
+      padding: 4px;
     }
   
     .screen {

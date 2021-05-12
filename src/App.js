@@ -9,168 +9,264 @@ class App extends React.Component {
     super(props);
     this.state = {
       screenText: "0",
-      hasDot: false,
+      dotAdded: false,
       isPositive: true,
-      hasOperator: false,
-      resultClicked: false,
-      resultClickedMultiple: false,
+      previousOperator: null,
       operands: [],
-      operators: [],
-      memory: [],
-      memoryClicked: false,
+      operatorClicked: false,
       resultClickedOperand: null,
+      memoryClicked: false,
+      lastMemoryKey: null,
+      resultClicked: false,
     };
   }
 
-  componentDidUpdate = () => {
+  // componentDidMount() {
+  //   console.log("******");
+  //   console.log(this.state.previousOperator);
+  //   console.log(this.state.operands);
+  //   console.log(this.state.resultClickedOperand);
+  //   console.log(this.state.operatorClicked);
+  // }
 
-  }
+  // componentDidUpdate() {
+  //   console.log("******");
+  //   console.log(this.state.previousOperator);
+  //   console.log(this.state.operands);
+  //   console.log(this.state.resultClickedOperand);
+  //   console.log(this.state.operatorClicked);
+  // }
+
   handlePressDigit = (digit) => {
     this.setState({
-      screenText: this.state.screenText === '0' || this.state.hasOperator || this.state.memoryClicked ? digit.toString() : this.state.screenText + digit.toString(),
-      hasOperator: false,
-      memoryClicked: false,
-      // resultClicked: false,
-    })
+      screenText:
+        this.state.screenText === "0" || this.state.operatorClicked || this.state.resultClicked
+          ? digit.toString()
+          : this.state.screenText + digit.toString(),
+      operatorClicked: false,
+      resultClickedOperand: null,
+      resultClicked: false,
+    });
   };
 
   handlePressOperator = (operator) => {
-    let tempOperators, tempOperands;
+    if (
+      !this.state.operatorClicked &&
+      this.state.resultClickedOperand === null
+    ) {
+      let tempOprands = [
+        ...this.state.operands,
+        parseFloat(this.state.screenText),
+      ];
+      let result = 0;
 
-    tempOperators = [...this.state.operators, operator];
-    tempOperands = [...this.state.operands, parseFloat(this.state.screenText)];
-    if (this.state.resultClicked) {
-      tempOperands.splice(0, tempOperands.length - 1);
-    }
-
-    let result = 0;
-    let lastOperand1, lastOperand2;
-    lastOperand1 = tempOperands.length - 1;
-    lastOperand2 = tempOperands.length - 2;
-
-
-    if (operator === '%') {
-      tempOperands[lastOperand1] = (tempOperands[lastOperand1] * tempOperands[lastOperand2]) / 100;
-      result = tempOperands[lastOperand1];
-      this.setState({
-        screenText: result === isNaN() ? '0' : result,
-      });
-    }
-    else {
-      if (tempOperands.length !== 1) {
-        switch (tempOperators[tempOperators.length - 2]) {
-          case '+':
-            result = tempOperands[lastOperand2] + tempOperands[lastOperand1];
+      // if (operator === "%") {
+      //   let tempVal =
+      //     (tempOprands[tempOprands.length - 1] *
+      //       tempOprands[tempOprands.length - 2]) /
+      //     1000;
+      //   tempOprands[tempOprands.length - 1] = tempVal;
+      //   console.log('data1: ', tempOprands);
+      //   this.setState({
+      //     operands: tempOprands,
+      //     screenText: isNaN(tempVal.toString()) ? '0': tempVal.toString(),
+      //     previousOperator: this.state.previousOperator,
+      //     operatorClicked: true,
+      //   });
+      //   // this.handlePressOperator(this.state.previousOperator);
+      // } else {
+      if (tempOprands.length !== 1) {
+        switch (this.state.previousOperator) {
+          case "+":
+            result =
+              tempOprands[tempOprands.length - 2] +
+              tempOprands[tempOprands.length - 1];
             break;
-          case '-':
-            result = tempOperands[lastOperand2] - tempOperands[lastOperand1];
+          case "-":
+            result =
+              tempOprands[tempOprands.length - 2] -
+              tempOprands[tempOprands.length - 1];
             break;
-          case '*':
-            result = tempOperands[lastOperand2] * tempOperands[lastOperand1];
+          case "*":
+            result =
+              tempOprands[tempOprands.length - 2] *
+              tempOprands[tempOprands.length - 1];
             break;
-          case '/':
-            result = tempOperands[lastOperand2] / tempOperands[lastOperand1];
+          case "/":
+            result =
+              tempOprands[tempOprands.length - 2] /
+              tempOprands[tempOprands.length - 1];
+            break;
+          case '%':
+            result =
+              tempOprands[tempOprands.length - 2] %
+              tempOprands[tempOprands.length - 1];
+          default:
             break;
         }
-        tempOperands.push(result);
-      }
-      else {
-        result = tempOperands[0];
+        tempOprands.push(result);
+      } else {
+        result = tempOprands[0];
       }
 
       this.setState({
-        hasOperator: true,
-        operators: tempOperators,
-        operands: tempOperands,
-        screenText: this.state.hasOperator ? (tempOperands.length % 2 === 0 ? result.toString() : this.state.screenText.slice(0, this.state.screenText.length - 1) + operator) :
-          result.toString() + operator,
-        resultClicked: false,
-      }, () => {
-        // console.log('tempoperands in operator: ', tempOperands);
-      })
+        previousOperator: operator,
+        operatorClicked: true,
+        operands: tempOprands,
+        isPositive: true,
+        dotAdded: false,
+        screenText:
+          tempOprands.length % 2 === 1
+            ? result.toString() + operator
+            : this.state.screenText.slice(
+              0,
+              this.state.screenText.length - 1
+            ) + operator,
+        resultClickedOperand: null,
+      });
+      // }
+    } else {
+      this.setState({
+        previousOperator: operator,
+        isPositive: true,
+        dotAdded: false,
+        screenText:
+          this.state.resultClickedOperand === null
+            ? this.state.screenText.slice(0, this.state.screenText.length - 1) +
+            operator
+            : this.state.screenText + operator,
+        resultClickedOperand: null,
+        operatorClicked: true,
+      });
     }
   };
 
   handlePressAC = () => {
     this.setState({
-      screenText: '0',
-      hasDot: false,
+      screenText: "0",
+      dotAdded: false,
       isPositive: true,
-      hasOperator: false,
-      resultClicked: false,
-      resultClickedMultiple: false,
-      operators: [],
       operands: [],
-      memory: [],
-      memoryClicked: false,
-    })
+      previousOperator: null,
+      operatorClicked: false,
+      resultClickedOperand: null,
+    });
   };
+
   handlePressDot = () => {
-    if (!this.state.hasDot) {
+    if (!this.state.dotAdded) {
       this.setState({
-        hasDot: true,
-        screenText: this.state.screenText + '.',
-      })
+        screenText: this.state.screenText + ".",
+        dotAdded: true,
+        operatorClicked: false,
+        resultClickedOperand: null,
+      });
     }
   };
+
   handlePressNegator = () => {
     if (this.state.isPositive) {
+      if (this.state.screenText !== "0") {
+        this.setState({
+          screenText: "-" + this.state.screenText,
+          isPositive: false,
+          operatorClicked: false,
+          resultClickedOperand: null,
+        });
+      }
+    } else {
       this.setState({
-        screenText: '-' + this.state.screenText,
-        isPositive: false,
-      })
-    }
-    else {
-      this.setState({
-        isPositive: true,
         screenText: this.state.screenText.slice(1),
-      })
+        isPositive: true,
+        operatorClicked: false,
+        resultClickedOperand: null,
+      });
     }
   };
 
   handlePressResult = () => {
+    if (this.state.previousOperator !== null) {
+      let tempOprands = [
+        ...this.state.operands,
+        parseFloat(this.state.screenText),
+      ];
 
-    let tempOperands, tempOperators;
-    tempOperands = [...this.state.operands, parseFloat(this.state.screenText)];
-    // tempOperands = [...this.state.operands];
-    tempOperators = [...this.state.operators];
+      let result = 0;
+      if (this.state.resultClickedOperand === null) {
+        switch (this.state.previousOperator) {
+          case "+":
+            result =
+              tempOprands[tempOprands.length - 2] +
+              tempOprands[tempOprands.length - 1];
+            break;
+          case "-":
+            result =
+              tempOprands[tempOprands.length - 2] -
+              tempOprands[tempOprands.length - 1];
+            break;
+          case "*":
+            result =
+              tempOprands[tempOprands.length - 2] *
+              tempOprands[tempOprands.length - 1];
+            break;
+          case "/":
+            result =
+              tempOprands[tempOprands.length - 2] /
+              tempOprands[tempOprands.length - 1];
+            break;
+          case '%':
+            result = 
+            tempOprands[tempOprands.length - 2] %
+            tempOprands[tempOprands.length - 1];
+          default:
+            break;
+        }
 
+        tempOprands.push(result);
+      } else {
+        switch (this.state.previousOperator) {
+          case "+":
+            result =
+              tempOprands[tempOprands.length - 1] +
+              this.state.resultClickedOperand;
+            break;
+          case "-":
+            result =
+              tempOprands[tempOprands.length - 1] -
+              this.state.resultClickedOperand;
+            break;
+          case "*":
+            result =
+              tempOprands[tempOprands.length - 1] *
+              this.state.resultClickedOperand;
+            break;
+          case "/":
+            result =
+              tempOprands[tempOprands.length - 1] /
+              this.state.resultClickedOperand;
+            break;
+          default:
+            break;
+        }
 
-    // tempOperands.push(parseFloat(this.state.screenText));
-    console.log('efrgvbf: ', tempOperands);
+        tempOprands.push(result);
+      }
 
-
-    let lastOperator = tempOperators[tempOperators.length - 1];
-    let lastOperand1, lastOperand2;
-    lastOperand1 = tempOperands.length - 1;
-    lastOperand2 = tempOperands.length - 2;
-
-    let result = 0;
-    switch (lastOperator) {
-      case '+':
-        result = tempOperands[lastOperand2] + tempOperands[lastOperand1];
-        break;
-      case '-':
-        result = tempOperands[lastOperand2] - tempOperands[lastOperand1];
-        break;
-      case '*':
-        result = tempOperands[lastOperand2] * tempOperands[lastOperand1];
-        break;
-      case '/':
-        result = tempOperands[lastOperand2] / tempOperands[lastOperand1];
-        break;
+      this.setState({
+        operands: tempOprands,
+        resultClickedOperand:
+          this.state.resultClickedOperand === null
+            ? parseFloat(this.state.screenText)
+            : this.state.resultClickedOperand,
+        operatorClicked: false,
+        isPositive: true,
+        dotAdded: false,
+        screenText: result.toString(),
+        resultClicked: true,
+      });
     }
-    tempOperands.push(result);
-
-    this.setState({
-      resultClicked: true,
-      screenText: result.toString(),
-      resultClickedMultiple: true,
-    }, () => {
-      console.log('tempOperads in handleReuslt: ', tempOperands);
-    });
-
   };
+
 
   // showScreenText = (tempOperands, tempOperators) => {
   //   console.log('let"s see: ', this.state.resultClicked);
@@ -195,24 +291,39 @@ class App extends React.Component {
     let onScreen = this.state.screenText;
     let currentMemory = localStorage.getItem(onScreen);
     currentMemory = parseFloat(currentMemory);
-    console.log('onScreen: ', onScreen);
     switch (memory) {
       case 'm+':
-        currentMemory += parseFloat(onScreen);
-        localStorage.removeItem(onScreen);
+        currentMemory = parseFloat(this.state.lastMemoryKey);
+        localStorage.removeItem(currentMemory);
+        currentMemory = isNaN(currentMemory) ? parseFloat(onScreen) : currentMemory + parseFloat(onScreen);
         localStorage.setItem(currentMemory, currentMemory);
+        this.setState({
+          lastMemoryKey: currentMemory.toString(),
+        });
         break;
       case 'm-':
+        currentMemory = parseFloat(this.state.lastMemoryKey);
+        localStorage.removeItem(currentMemory);
+        currentMemory = isNaN(currentMemory) ? parseFloat(onScreen) : currentMemory - parseFloat(onScreen);
+        localStorage.setItem(currentMemory, currentMemory);
+        this.setState({
+          lastMemoryKey: currentMemory.toString(),
+        });
         break;
       case 'mc':
         localStorage.clear();
         break;
       case 'mr':
         this.setState({
-          screenText: '',
+          screenText: this.state.lastMemoryKey,
         });
         break;
       case 'ms':
+        currentMemory = isNaN(currentMemory) ? parseFloat(onScreen) : currentMemory;
+        localStorage.setItem(currentMemory, currentMemory);
+        this.setState({
+          lastMemoryKey: currentMemory.toString(),
+        })
         break;
     }
 
