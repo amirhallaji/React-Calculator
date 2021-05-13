@@ -42,6 +42,10 @@
   background-color:grey;
 }
 
+.mem:hover {
+  background-color:aquamarine;
+}
+
 @media screen and (max-width: 400px) {
   .key {
     width: 50px;
