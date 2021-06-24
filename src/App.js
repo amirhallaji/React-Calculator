@@ -312,6 +312,9 @@ class App extends React.Component {
         break;
       case 'mc':
         localStorage.clear();
+        this.setState({
+          lastMemoryKey: '',
+        })
         break;
       case 'mr':
         this.setState({
