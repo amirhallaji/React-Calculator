@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/amirhallaji.github.io/React-Calculator/static/css/main.5e6d61e5.chunk.css",
-    "main.js": "/amirhallaji.github.io/React-Calculator/static/js/main.e57c7cd2.chunk.js",
-    "main.js.map": "/amirhallaji.github.io/React-Calculator/static/js/main.e57c7cd2.chunk.js.map",
-    "runtime-main.js": "/amirhallaji.github.io/React-Calculator/static/js/runtime-main.d1511c12.js",
-    "runtime-main.js.map": "/amirhallaji.github.io/React-Calculator/static/js/runtime-main.d1511c12.js.map",
-    "static/js/2.7bbf6db4.chunk.js": "/amirhallaji.github.io/React-Calculator/static/js/2.7bbf6db4.chunk.js",
-    "static/js/2.7bbf6db4.chunk.js.map": "/amirhallaji.github.io/React-Calculator/static/js/2.7bbf6db4.chunk.js.map",
-    "static/js/3.fee6f233.chunk.js": "/amirhallaji.github.io/React-Calculator/static/js/3.fee6f233.chunk.js",
-    "static/js/3.fee6f233.chunk.js.map": "/amirhallaji.github.io/React-Calculator/static/js/3.fee6f233.chunk.js.map",
-    "index.html": "/amirhallaji.github.io/React-Calculator/index.html",
-    "static/css/main.5e6d61e5.chunk.css.map": "/amirhallaji.github.io/React-Calculator/static/css/main.5e6d61e5.chunk.css.map",
-    "static/js/2.7bbf6db4.chunk.js.LICENSE.txt": "/amirhallaji.github.io/React-Calculator/static/js/2.7bbf6db4.chunk.js.LICENSE.txt"
+    "main.css": "/React-Calculator/static/css/main.5e6d61e5.chunk.css",
+    "main.js": "/React-Calculator/static/js/main.e57c7cd2.chunk.js",
+    "main.js.map": "/React-Calculator/static/js/main.e57c7cd2.chunk.js.map",
+    "runtime-main.js": "/React-Calculator/static/js/runtime-main.8a164c9d.js",
+    "runtime-main.js.map": "/React-Calculator/static/js/runtime-main.8a164c9d.js.map",
+    "static/js/2.7bbf6db4.chunk.js": "/React-Calculator/static/js/2.7bbf6db4.chunk.js",
+    "static/js/2.7bbf6db4.chunk.js.map": "/React-Calculator/static/js/2.7bbf6db4.chunk.js.map",
+    "static/js/3.fee6f233.chunk.js": "/React-Calculator/static/js/3.fee6f233.chunk.js",
+    "static/js/3.fee6f233.chunk.js.map": "/React-Calculator/static/js/3.fee6f233.chunk.js.map",
+    "index.html": "/React-Calculator/index.html",
+    "static/css/main.5e6d61e5.chunk.css.map": "/React-Calculator/static/css/main.5e6d61e5.chunk.css.map",
+    "static/js/2.7bbf6db4.chunk.js.LICENSE.txt": "/React-Calculator/static/js/2.7bbf6db4.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.d1511c12.js",
+    "static/js/runtime-main.8a164c9d.js",
     "static/js/2.7bbf6db4.chunk.js",
     "static/css/main.5e6d61e5.chunk.css",
     "static/js/main.e57c7cd2.chunk.js"
